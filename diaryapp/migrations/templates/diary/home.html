@@ -1,0 +1,23 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+<style>
+	#img{
+		margin:0px auto;
+		height:500px;
+		width:1200px;
+	}
+</style>
+  <aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<img src="/static/images/home.jpeg" id="img">
+					<div class="col-md-12 breadcrumbs text-center">
+						<div style="height:50px"></div>
+						<a href="/diary/mydiary/?page=1"><h2>오늘 하루 기록하러 가기</h2></a>
+						<p><span></span></p>
+					</div>
+				</div>
+			</div>
+		</aside>
+{% endblock %}

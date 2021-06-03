@@ -1,0 +1,109 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+<!--<link rel="stylesheet" href="{% static 'css/text_style.css' %}">-->
+<!--<link rel="stylesheet" href="{% static 'css/buttons_style.css' %}">-->
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="{% static 'cake/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/flaticon.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/barfiller.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/style.css' %}" type="text/css">
+<body>
+<!-- partial:index.partial.html -->
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>Record Your Day</h2>
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+<div class="container col-md-12">
+<!--  <div class="panel">-->
+<!--    <div id="snow-container" name="content"></div>-->
+
+<!--  </div>-->
+	<div id="app">
+		<form action="../record_ok" method="post">
+		{% csrf_token %}
+	<div class="col-md-8">
+		<div style="height:50px"></div>
+		<h2 class="heading-2">오늘 하루는 어떠셨나요?</h2>
+
+				<div class="row form-group">
+					<div class="col-md-6">
+						<label for="fname">Name</label>
+						{% if id %}
+						<input type="text" id="fname" class="form-control" name="name" autocomplete="off" value="{{id}}">
+						{% else %}
+						<input type="text" class="form-control" name="name" autocomplete="off">
+						{% endif %}
+					</div>
+					<div class="col-md-2">
+						<label for="pwd">Pwd</label>
+						<input type="password" id="pwd" class="form-control" name="pwd">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-md-12">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-md-12">
+						<label for="subject">Subject</label>
+						<input type="text" id="subject" class="form-control" autocomplete="off" name="subject">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-md-12">
+						<label for="msg">Message</label>
+						<textarea id="msg" cols="30" rows="10" class="form-control" name="msg"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="기록하기" class="btn btn-primary" id="sendBtn">
+					<a href="/diary/mydiary/"><input type="button" value="back" class="btn"></a>
+				</div>
+	</div>
+	<div class="col-md-4">
+		<div style="height:50px"></div>
+		<h3 class="heading-2">Choose Today's Mood</h3>
+		<div class="col-md-12">
+			<label><input type="radio" name="mood" class="form-control" value="1">쓸쓸</label>
+			<label><input type="radio" name="mood" class="form-control" value="2">열일</label>
+			<label><input type="radio" name="mood" class="form-control" value="3">휴식</label>
+			<label><input type="radio" name="mood" class="form-control" value="4">행복</label>
+			<label><input type="radio" name="mood" class="form-control" value="5">음악</label>
+			<label><input type="radio" name="mood" class="form-control" value="6">질주</label>
+			<label><input type="radio" name="mood" class="form-control" value="7">공허</label>
+			<label><input type="radio" name="mood" class="form-control" value="8">고독</label>
+			<label><input type="radio" name="mood" class="form-control" value="9">한잔</label>
+			<label><input type="radio" name="mood" class="form-control" value="10">우울</label>
+			<label><input type="radio" name="mood" class="form-control" value="11">혼자</label>
+			<label><input type="radio" name="mood" class="form-control" value="12">사랑</label>
+			<label><input type="radio" name="mood" class="form-control" value="13">짜증</label>
+			<label><input type="radio" name="mood" class="form-control" value="14">고뇌</label>
+			<label><input type="radio" name="mood" class="form-control" value="15">설렘</label>
+			<label><input type="radio" name="mood" class="form-control" value="16">여행</label>
+			<label><input type="radio" name="mood" class="form-control" value="17">평화</label>
+			<label><input type="radio" name="mood" class="form-control" value="18">비옴</label>
+			<label><input type="radio" name="mood" class="form-control" value="19">지침</label>
+		</div>
+	</div>
+		</form>
+	</div>
+
+</div>
+<!-- partial -->
+</body>
+{% endblock %}

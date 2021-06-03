@@ -1,0 +1,10 @@
+{% if result %}
+<script>
+     location.href="/diary/mydiary/?page=1"
+</script>
+{% else %}
+<script>
+    alert('비밀번호가 틀립니다');
+    history.back();
+</script>
+{% endif %}

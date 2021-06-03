@@ -1,0 +1,112 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+<style>
+	#title{
+		font-size:12px;
+		font-weight:bold
+	}
+	a {
+		color:black;
+	}
+</style>
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>Shop</h2>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+		<div id="colorlib-container">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-9 content">
+						<div class="row row-pb-md">
+
+							{% for row in list %}
+							<div class="col-md-4">
+								<div class="blog-entry">
+									<div class="blog-img">
+										<a href="/diary/detail/?no={{row.no}}"><img src="{{row.thumb}}" class="img-responsive" alt="html5 bootstrap template"></a>
+									</div>
+									<div class="desc">
+										<p class="meta">
+											<span class="cat"><a href="#"></a></span>
+											<span class="date"></span>
+											<span class="pos"></span>
+										</p>
+										<div style="height:50px">
+										<p id="title"><a href="/diary/detail/?no={{row.no}}">{{row.title}}</a></p>
+										</div>
+										<p style="font-size:9px">{{row.price}}</p>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+
+						<!-- 페이지 블록 -->
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<ul class="pagination">
+									{% if startPage > 1 %}
+									<li><a href="../shop/?page={{startPage|add:-1}}&cno={{cno}}">pre</a></li>
+									{% endif %}
+									{% for i in range %}
+										{% if i == curpage %}
+											<li class="active"><a href="../shop/?page={{i}}&cno={{cno}}">{{i}}</a></li>
+										{% else %}
+											<li><a href="../shop/?page={{i}}&cno={{cno}}">{{i}}</a></li>
+										{% endif %}
+									{% endfor %}
+									{% if endPage < totalpage %}
+									<li><a href="../shop/?page={{endPage|add:+1}}&cno={{cno}}">next</a></li>
+									{% endif %}
+								</ul>
+							</div>
+						</div>
+
+
+					</div>
+
+
+					<div class="col-md-3">
+						<div class="sidebar">
+							<div class="side">
+								<div class="form-group">
+									<input type="text" class="form-control" id="search" placeholder="Enter any key to search...">
+									<button type="submit" class="btn btn-primary"><i class="icon-search3"></i></button>
+								</div>
+							</div>
+							<div class="side">
+								<h2 class="sidebar-heading">Categories</h2>
+								<p>
+									<ul class="category">
+										<h4>Diary</h4>
+										{% for row in d_list %}
+										<li><a href="../shop/?page=1&cno={{row.cno}}"><i class="icon-check"></i>{{row.title}}</a></li>
+										{% endfor %}
+									</ul>
+									<div style="height:20px"></div>
+									<ul class="category">
+										<h4>Sticker</h4>
+										{% for row in s_list %}
+										<li><a href="../shop/?page=1&cno={{row.cno}}"><i class="icon-check"></i>{{row.title}}</a></li>
+										{% endfor %}
+									</ul>
+								</p>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		</div>
+{% endblock %}

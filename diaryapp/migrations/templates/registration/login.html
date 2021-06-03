@@ -1,0 +1,12 @@
+<ul>
+{% if user.is_active %}
+    <!--로그인 상태면 아이디 / logout 이 뜨고-->
+    <li><a href="{%url 'login' %}"></a></li>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+{% else %}
+
+    <!--로그인 상태가 아니면 login / admin이 뜬다.-->
+    <li><a href="{% url 'login' %}"> Login</a></li>
+    <li><a href="{% url 'admin:index' %}">Admin</a></li>
+{% endif %}
+</ul>

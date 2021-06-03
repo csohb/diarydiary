@@ -1,0 +1,79 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+<script>
+    $(function(){
+        let no=$('.label').attr('mood')
+        url=['1.gif','2.gif','3.gif','4.png','5.gif','6.gif','7.gif','8.gif','9.gif','10.gif',
+        '11.gif','12.jpg','13.png','14.gif','15.gif','16.gif','17.gif','18.gif','19.gif']
+        mood=['쓸쓸','열일','휴식','행복','음악','질주본능','그리움','고독','한잔','우울','혼자','사랑','짜증','고뇌','설렘','여행','평화','비옴','지침']
+        let img=url[Number(no)-1]
+        let print=mood[Number(no)-1]
+        $('.bg').attr('src','/static/images/mood/'+img);
+        $('#mood').text(print)
+    })
+</script>
+<style>
+    .pic{
+        height: 385px;
+        position: relative;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'cake/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/flaticon.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/barfiller.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/style.css' %}" type="text/css">
+
+
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>Diary</h2>
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+<section class="blog spad">
+    <div class="container">
+    <div class="row">
+                <div class="col-lg-9">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="/static/img/blog/blog-1.jpg">
+                            <img src="" class="bg pic" no="{{row.mood}}" id="mood_{{row.no}}" mno="{{row.no}}">
+                            <div class="blog__pic__inner">
+                                <div class="label" mood="{{detail.mood}}" id="mood"></div>
+                                <ul>
+                                    <li>By <span>{{detail.name}}</span></li>
+                                    <li>{{detail.regdate}}</li>
+                                    <li>{{detail.heart}} hearts</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="blog__item__text">
+                            <h2>{{detail.title}}</h2>
+                            <div class="form-group" style="float:right">
+                                <a href="/diary/update/?no={{detail.no}}"><input type="button" value="수정" class="btn" id="updateBtn"></a>
+                                <a href="/diary/delete/?no={{detail.no}}"><input type="button" value="삭제" class="btn" id="delBtn"></a>
+				            </div>
+                            <div style="height:50px"></div>
+                            <pre>{{detail.content}}</pre>
+                            <a href="/diary/heart/?no={{detail.no}}&page={{curpage}}"><img src="/static/images/heart.png"  style="float:right"></a>
+                            <br>
+                            <a href="/diary/mydiary/?page={{curpage}}">Back To List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</section>
+{% endblock %}

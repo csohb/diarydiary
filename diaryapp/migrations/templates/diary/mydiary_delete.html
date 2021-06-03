@@ -1,0 +1,61 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'cake/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/flaticon.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/barfiller.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/style.css' %}" type="text/css">
+<style>
+    .pwdrow{
+        margin:0px auto;
+        width:200px;
+        height:500px;
+    }
+
+</style>
+
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>Diary</h2>
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</aside>
+<div style="height:100px"></div>
+<div class="container">
+
+            <div class="pwdrow">
+
+             <form method="post" action="../delete_ok">
+                 {% csrf_token %}
+             <table class="table">
+                 <tr>
+                     <td class="text-center">
+                         <input type="password" name="pwd" size="10" class="input-sm" required placeholder="Enter pwd">
+                         <input type="hidden" name="no" value="{{no}}">
+                     </td>
+                 </tr>
+                 <tr>
+                     <td class="text-center">
+                         <input type="submit" value="삭제" class="btn btn-sm">
+                         <input type="button" value="취소" class="btn btn-sm"
+                           onclick="javascript:history.back()"
+                         >
+                     </td>
+                 </tr>
+             </table>
+             </form>
+            </div>
+
+</div>
+{% endblock %}
