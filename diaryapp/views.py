@@ -1,16 +1,26 @@
 from django.shortcuts import render,redirect
 from diaryapp import models
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 # Create your views here.
 def diary_home(request):
-    id=request.session['id']
-    name=request.session['name']
-    print(id)
-    return render(request,'diary/home.html',{"id":id,"name":name})
+    try:
+        id=request.session['id']
+        name=request.session['name']
+    except:
+        id=None
+        name=None
+    #print(id)
+    return render(request,'diary/home.html',{"id":id})
 
 def diary_shop(request):
-    # get에 없을경우 default 처리해주기
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     try:
         cno = request.GET['cno']
         curcno=int(cno)
@@ -50,11 +60,15 @@ def diary_shop(request):
 
 
     return render(request,'diary/shop.html',{"d_list":d_list,"s_list":s_list,"list":list,
-            "totalpage":totalpage,"startPage":startPage,"endPage":endPage,"cno":curcno,"curpage":curpage,"range":range(startPage,endPage+1),"id":id})
+            "totalpage":totalpage,"startPage":startPage,"endPage":endPage,"cno":curcno,"curpage":curpage,"range":range(startPage,endPage+1)})
 
 def diary_detail(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     no=request.GET['no']
     data=models.shopDetail(int(no))
     #no,cno,thumb,brand,price,mileage,made,material,big,detail,title
@@ -79,8 +93,12 @@ def diary_detail(request):
     return render(request,'diary/detail.html',{"dd":dd,"list":list,"id":id})
 
 def myDiary(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     try:
         page=request.GET['page']
         curpage=int(page)
@@ -103,28 +121,40 @@ def myDiary(request):
         list.append(d_data)
     #print(startPage)
     #print(endPage)
-    return render(request,'diary/mydiary.html',{"list":list,"curpage":curpage,"totalpage":totalpage,"startPage":startPage,"endPage":endPage,"range":range(startPage,endPage+1),"id":id})
+    return render(request,'diary/mydiary.html',{"list":list,"curpage":curpage,"totalpage":totalpage,"startPage":startPage,"endPage":endPage,"range":range(startPage,endPage+1)})
 
 def myDiaryRecord(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     return render(request,'diary/record.html',{"id":id,"name":name})
 
 def myDiaryRecordOk(request):
     #title,content,pwd,name,regdate,mood
+    try:
+        id=request.session['id']
+    except:
+        id=None
     title=request.POST['subject']
     content=request.POST['msg']
     pwd=request.POST['pwd']
     name=request.POST['name']
     mood=request.POST['mood']
     print(title,content,pwd,name,mood)
-    insert_value=(title,content,pwd,name,mood)
+    insert_value=(title,content,pwd,name,mood,id)
     models.myDiaryInsert(insert_value)
     return redirect('/diary/mydiary/?page=1')
 
 def myDiaryDetatil(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     no=request.GET['no']
     try:
         page=request.GET['page']
@@ -134,20 +164,28 @@ def myDiaryDetatil(request):
     data=models.myDiaryDetail(int(no))
     #no,title,content,pwd,name,regdate,mood,heart
     detail={"no":data[0],"title":data[1],"content":data[2],"pwd":data[3],"name":data[4],"regdate":data[5],"mood":data[6],"heart":data[7]}
-    return render(request,'diary/mydiary_detail.html',{"detail":detail,"curpage":curpage,"id":id})
+    return render(request,'diary/mydiary_detail.html',{"detail":detail,"curpage":curpage})
 
 
 
 # 일기 삭제
 def mydiaryDelete(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     no=request.GET['no']
     return render(request,'diary/mydiary_delete.html',{"no":no,"id":id})
 
 def mydiaryDeleteOK(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     no=request.POST['no']
     pwd=request.POST['pwd']
     delete_value=(no,pwd)
@@ -156,8 +194,12 @@ def mydiaryDeleteOK(request):
 
 #일기 수정
 def myDiaryUpdate(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     no=request.GET['no']
     data=models.myDiaryDetail(int(no))
     #no,title,content,pwd,name,regdate,mood,heart
@@ -165,8 +207,12 @@ def myDiaryUpdate(request):
     return render(request,'diary/mydiary_update.html',{"no":no,"detail":detail,"id":id})
 
 def myDiaryUpdateOK(request):
-    id = request.session['id']
-    name = request.session['name']
+    try:
+        id = request.session['id']
+        name = request.session['name']
+    except:
+        id = None
+        name = None
     no = request.POST['no']
     print(no)
     title = request.POST['subject']
@@ -181,9 +227,12 @@ def myDiaryUpdateOK(request):
 # 일기 하트 증가
 def myDiaryHeart(request):
     no=request.GET['no']
-    curpage=request.GET['page']
-    models.heart_up(int(no))
-    return redirect('/diary/mydiary_detail/?no='+no+'&page='+curpage)
+    heart=models.heart_up(int(no))
+    result={
+        'result':'success',
+        'heart':heart
+    }
+    return JsonResponse(result)
 
 #로그인
 def login(request):
@@ -213,3 +262,172 @@ def logout(request):
 #회원가입
 def signup(request):
     return render(request,'diary/signup.html')
+
+def signup_ok(request):
+    id=request.POST['id']
+    name=request.POST['name']
+    email=request.POST['email']
+    pwd=request.POST['pwd']
+    sex=request.POST['sex']
+    tel=request.POST['tel']
+    signup_data=(id,name,email,pwd,sex,tel)
+    models.signup(signup_data)
+    return redirect('/diary/')
+
+
+def checkid(request):
+    id=request.GET['id']
+    print(id)
+    try:
+        check=models.idcheck(id)
+    except Exception as e:
+        print(e)
+    result={
+        'result':'success',
+        'data':'not exist' if check is "YES" else "NO"
+    }
+    return JsonResponse(result)
+def checkemail(request):
+    email=request.GET['email']
+    print(email)
+    try:
+        check=models.emailcheck(email)
+    except Exception as e:
+        print(e)
+    result={
+        'result':'success',
+        'data':'not exist' if check is "YES" else "NO"
+    }
+    return JsonResponse(result)
+
+def checktel(request):
+    tel=request.GET['tel']
+    try:
+        check=models.telcheck(tel)
+    except Exception as e:
+        print(e)
+    result={
+        'result':'success',
+        'data':'not exist' if check is "YES" else "NO"
+    }
+    return JsonResponse(result)
+
+@csrf_exempt
+def cart_ok(request):
+    #no,pno,title,amount,price,poster,id
+    pno=request.POST['pno']
+    title=request.POST['title']
+    amount=request.POST['amount']
+    price=request.POST['price']
+    poster=request.POST['poster']
+    try:
+        id = request.session['id']
+    except:
+        id = None
+    cart_value = (pno, title, amount, price, poster, id)
+    print(cart_value)
+    try:
+        check=models.cartAdd(cart_value)
+        print(check)
+    except Exception as e:
+        print(e)
+    result={
+        'result':'success',
+        'data':'YES' if check is "YES" else 'NO'
+    }
+    return JsonResponse(result)
+
+#장바구니 띄우기
+def cart(request):
+    try:
+        id = request.session['id']
+    except Exception as e:
+        print(e)
+    list=[]
+    data=models.cartInfo(id)
+    #no,pno,title,amount,poster,price
+    for row in data:
+        price=row[5]
+        price=price[:-1]
+        price=int(price.replace(',',''))
+        print(price)
+        amount=row[3]
+        total=price*amount
+        cd={"no":row[0],"pno":row[1],"title":row[2],"amount":row[3],"poster":row[4],"price":price,"total":total}
+        list.append(cd)
+    return render(request,'diary/cart.html',{"list":list,"id":id})
+
+#장바구니 삭제
+@csrf_exempt
+def cartDel(request):
+    no=request.GET['no']
+    print(no)
+    check=models.cartDelete(no)
+    print('view='+check)
+    result={
+        'result': 'success',
+        'data': 'YES' if check is 'YES' else 'NO'
+    }
+    return JsonResponse(result)
+
+#주문하기
+def cart_to_order(request):
+    id=request.GET['id']
+    print(id)
+    models.cartToOrder(id)
+    result={
+        'result':'success',
+    }
+    return JsonResponse(result)
+
+def mypage(request):
+    id = request.session['id']
+    oList = models.orderList(id)
+    list = []
+    # no,pno,title,amount,poster,price
+    for row in oList:
+        ol = {"no": row[0], "pno": row[1], "title": row[2], "amount": row[3], "poster": row[4], "price": row[5]}
+        list.append(ol)
+    dList = models.mypageDiaryList(id)
+    DList = []
+    # no,title,heart,regdate,mood
+    for row in dList:
+        dl = {"no": row[0], "title": row[1], "heart": row[2], "regdate": row[3], "mood": row[4]}
+        DList.append(dl)
+    return render(request,'diary/mypage.html',{"id":id,"list":list,"DList":DList})
+
+def mypageOrderList(request):
+    id = request.session['id']
+    oList = models.orderList(id)
+    list = []
+    # no,pno,title,amount,poster,price
+    for row in oList:
+        ol = {"no": row[0], "pno": row[1], "title": row[2], "amount": row[3], "poster": row[4], "price": row[5]}
+        list.append(ol)
+    json_oList = json.dumps(list)
+    data={
+        'oList':json_oList
+    }
+    return JsonResponse(data)
+
+def mypageDList(request):
+    id = request.session['id']
+    dList=models.mypageDiaryList(id)
+    list=[]
+    # no,title,heart,regdate,mood
+    for row in dList:
+        dl={"no":row[0],"title":row[1],"heart":row[2],"regdate":row[3],"mood":row[4]}
+        list.append(dl)
+    json_dList=json.dumps(list)
+    data={
+        'dList':json_dList
+    }
+    return JsonResponse(data)
+
+def orderDelete(request):
+    id=request.session['id']
+    models.mypageOrderListDelete(id)
+    data={
+        'result':'success'
+    }
+    return JsonResponse(data)

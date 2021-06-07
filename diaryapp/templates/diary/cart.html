@@ -1,0 +1,118 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'cake/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/flaticon.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/barfiller.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/style.css' %}" type="text/css">
+
+<style>
+    .itemimg{
+        width:150px;
+        height:150px;
+    }
+</style>
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>Cart</h2>
+					</div>
+				</div>
+			</div>
+		</aside>
+ <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="breadcrumb__text">
+                        <h2>Shopping cart</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="breadcrumb__links">
+                        <a href="/diary/">Home</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for row in list %}
+
+                                <tr id="sum{{ forloop.counter }}" class="tr_{{row.no}} cart_tr">
+                                    <td class="product__cart__item pno" pno="{{row.no}}">
+                                        <div class="product__cart__item__pic">
+                                            <img src="{{row.poster}}" alt="" class="itemimg">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6>{{row.title}}</h6>
+                                            <h5>{{row.price}}원</h5>
+                                            <input type="hidden" value="{{row.price}}" id="price_{{row.no}}">
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="pro-qty" id="cartUpBtn" pno="{{row.no}}">
+                                                <input type="text" value="{{row.amount}}" id="amount_{{row.no}}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price" id="total_{{row.no}}" pno="{{row.no}}">{{row.total}}</td>
+                                    <td class="cart__close"><span class="icon_close" id="cancle" delete="{{row.no}}"></span></td>
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="/diary/shop/">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li >Total <span id="final"></span></li>
+                        </ul>
+                        <div class="primary-btn" id="orderBtn" oid="{{id}}">주문하기</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

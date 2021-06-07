@@ -19,5 +19,15 @@ urlpatterns=[
     path('heart/',views.myDiaryHeart),
     path('logout',views.logout),
     path('signup/',views.signup),
-
+    path('idcheck/',views.checkid),
+    path('emailcheck/',views.checkemail),
+    path('telcheck/',views.checktel),
+    path('signup_ok',views.signup_ok),
+    path('cart_ok/',views.cart_ok),
+    path('cart/',views.cart),
+    path('cart_del/',views.cartDel),
+    path('cart_order/',views.cart_to_order),
+    path('mypage/',views.mypage),
+    path('orderList/',views.mypageOrderList),
+    path('order_del/',views.orderDelete),
 ]

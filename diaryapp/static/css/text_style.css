@@ -1,0 +1,14 @@
+
+#bubble-container, #snow-container {
+  height: 300px;
+  margin-bottom: 10px;
+}
+.container {
+  display: flex;
+}
+
+.panel {
+  flex: 1;
+  margin-left: 25px;
+  margin-right: 25px;
+}

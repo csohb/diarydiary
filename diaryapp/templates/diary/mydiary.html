@@ -1,0 +1,99 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .bg{
+        height: 240px;
+        position: relative;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'cake/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/flaticon.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/barfiller.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'cake/css/style.css' %}" type="text/css">
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>Diary</h2>
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+
+<!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="breadcrumb__text">
+                        <h2>#Mood</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="breadcrumb__links">
+                        <a href="/diary/record/" class="btn">Write Your Today's Mood Here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Class Section Begin -->
+    <section class="class-page spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="row">
+                        {% for row in list %}
+                        <div class="col-lg-6 col-md-6">
+                            <div class="class__item">
+                                <div class="class__item__pic set-bg" data-setbg="">
+                                    <img src="" class="bg" no="{{row.mood}}" id="mood_{{row.no}}" mno="{{row.no}}">
+                                    <div class="label" id="print_{{row.no}}"><!--{{row.mood}}--></div>
+                                </div>
+                                <div class="class__item__text">
+                                    <div>
+                                    <h5 class="mood"><a href="/diary/mydiary_detail/?no={{row.no}}&page={{curpage}}">{{row.title}}</a></h5>
+                                    </div>
+                                    <span>{{row.regdate}}</span>
+                                    <p>{{row.name}}님의 오늘 일기</p>
+                                    <p>{{row.heart}}개의 <img src="/static/images/heart.png"> 를 GET</p>
+                                    <a href="/diary/mydiary_detail/?no={{row.no}}&page={{curpage}}" class="read_more">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+                    <div class="shop__pagination">
+                        {% if startPage > 1 %}
+                        <a href="/diary/mydiary/?page={{startPage|add:-1}}"><span class="arrow_carrot-left"></span></a>
+                        {% endif %}
+                        {% for i in range%}
+                        <a href="/diary/mydiary/?page={{i}}">{{i}}</a>
+                        {% endfor %}
+                        {% if endPage < totalpage %}
+                        <a href="/diary/mydiary/?page={{endPage|add:+1}}"><span class="arrow_carrot-right"></span></a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- Class Section End -->
+{% endblock %}

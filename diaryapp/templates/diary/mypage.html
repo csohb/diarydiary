@@ -1,0 +1,137 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+{% load static %}
+<script src="https://unpkg.com/vue"></script>
+<script src="http://unpkg.com/axios/dist/axios.min.js"></script>
+<style>
+	.table{
+		width:100%;
+	}
+	#yet{
+		position:relative;
+		left:37%;
+		margin:0 auto;
+	}
+	#profi{
+		width:150px;
+		height:150px;
+	}
+	p{
+		height:100px;
+	}
+</style>
+<link rel="stylesheet" href="{% static 'css/profile_style.css' %}">
+<aside id="colorlib-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 breadcrumbs text-center">
+						<h2>My Page</h2>
+					</div>
+				</div>
+			</div>
+		</aside>
+
+
+<header>
+	<div class="container">
+		<div class="profile">
+			<div class="profile-image">
+				<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80" alt="" class="img-circle" id="profi">
+			</div>
+
+			<div class="profile-user-settings">
+				<h1 class="profile-user-name">{{id}}님의 마이페이지</h1>
+				<button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+			</div>
+
+			<div class="profile-stats">
+				<ul>
+					<li id="mydiary" cno="1" class="btn"><span class="profile-stat-count" ></span> 내가 쓴 일기</li>
+					<li id="order" cno="3" class="btn"><span class="profile-stat-count" ></span> 주문 내역</li>
+				</ul>
+			</div>
+
+			<div class="profile-bio">
+				<p><span class="profile-real-name">{{id}}</span> 님의 기록들은 여기서 💖👀</p>
+			</div>
+		</div>
+		<!-- End of profile section -->
+		<div class="row">
+			<div style="height:50px"></div>
+		<!--<div style="height:400px;width:1000px;overflow-y:auto">-->
+					  <table class="table" id="orderTable">
+						  	{% if list %}
+					    <tr>
+					     <th style="width:10%">주문번호</th>
+					     <th style="width:20%">img</th>
+					     <th style="width:40%">주문상품</th>
+					     <th style="width:15%">수량</th>
+					     <th style="width:15%">금액</th>
+					    </tr>
+
+							{% for row in list %}
+					     <tr>
+					     <td>{{row.no}}</td>
+					     <td><img src='{{row.poster}}' style="width:40px;height:40px;" class="img-circle"></td>
+					     <td>{{row.title}}</td>
+					     <td>{{row.amount}}</td>
+					     <td>{{row.price}}</td>
+					    </tr>
+						  {% endfor %}
+						<tr>
+							<td colspan="5"><h5 style="float:right;" id="mypageCancle" cid="{{id}}">전체취소하기</h5></td>
+						</tr>
+						  {% else %}
+						  <div><p class="notyet" id="yet">아직 주문한 내역이 없습니다</p></div>
+						  <div style="height:100px;" class="notyet"></div>
+						  <div class="btn notyet" style="float:right" id="orderGo">주문하러가기</div>
+						  {% endif %}
+					   </table>
+
+
+					<div class="row" id="diaryTable">
+							{% if DList %}
+							{% for row in DList %}
+						<div class="col-md-4 bg">
+						<div class="thumbnail">
+						  <a href="/diary/mydiary_detail/?no={{row.no}}">
+							<img src="" style="width:100%;height:200px;" class="th" mno="{{row.no}}" no="{{row.mood}}" id="mood_{{row.no}}">
+							<div class="caption">
+							  <p>{{row.title}}</p>
+								<h6>{{row.regdate}}</h6>
+							</div>
+						  </a>
+						</div>
+					  </div>
+							{% endfor %}
+							{% else %}
+						<div><h4>아직 작성한 일기가 없습니다</h4></div>
+							{% endif %}
+					</div>
+
+
+
+
+					 <!-- </div>-->
+	</div>
+		<div style="height:100px"></div>
+	</div>
+	<!-- End of container -->
+</header>
+	<script>
+		new Vue({
+			delimiters:['[[',']]'],
+			el:'.container',
+			data:{
+				oList:[]
+			},
+			mounted(){
+				axios.get('http://127.0.0.1:8000/diary/orderList/').then(response=>{
+					this.oList=response.data
+					console.log(this.oList)
+				})
+			}
+		})
+	</script>
+
+{% endblock %}

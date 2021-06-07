@@ -118,9 +118,9 @@ def myDiaryInsert(insert_value):
     conn = getConnection()
     cursor = conn.cursor()
     sql="""
-        INSERT INTO daily(no,title,content,pwd,name,regdate,mood)
+        INSERT INTO daily(no,title,content,pwd,name,regdate,mood,id)
         VALUES(
-             (SELECT NVL(MAX(no)+1,1) FROM daily),:1,:2,:3,:4,SYSDATE,:6
+             (SELECT NVL(MAX(no)+1,1) FROM daily),:1,:2,:3,:4,SYSDATE,:6,:7
         )
     """
     cursor.execute(sql,insert_value)
@@ -267,4 +267,254 @@ def heart_up(no):
     conn.commit()
     print("하트 증가 완료")
     cursor.close()
+    cursor = conn.cursor()
+    sql=f"""
+        SELECT heart FROM daily
+        WHERE no={no}
+    """
+    cursor.execute(sql)
+    data=cursor.fetchone()
+    heart=data[0]
+    print(heart)
+    cursor.close()
     conn.close
+    return heart
+
+# 회원가입
+def signup(signup_value):
+    conn = getConnection()
+    cursor = conn.cursor()
+    #signup_data=(id,name,email,pwd,sex,tel)
+    '''
+    id=signup_value[0]
+    name=signup_value[1]
+    email=signup_value[2]
+    pwd=signup_value[3]
+    sex=signup_value[4]
+    tel=signup_value[5]
+    '''
+    sql="""
+        INSERT INTO d_member(id,name,email,pwd,sex,tel)
+        VALUES(
+            :1, :2, :3, :4, :5, :6
+        )
+    """
+    cursor.execute(sql,signup_value)
+    conn.commit()
+    print('회원가입 완료!')
+    cursor.close()
+    conn.close()
+
+def idcheck(id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    check=""
+    sql=f"""
+        SELECT COUNT(*) FROM d_member
+        WHERE id='{id}'
+    """
+    cursor.execute(sql)
+    result=cursor.fetchone()
+    cursor.close()
+    #print(result[0])
+    if result[0] == 0:
+        check="YES"
+    else:
+        check="NO"
+    print(check)
+    conn.close()
+    return check
+
+def emailcheck(email):
+    conn = getConnection()
+    cursor = conn.cursor()
+    check = ""
+    sql = f"""
+            SELECT COUNT(*) FROM d_member
+            WHERE email='{email}'
+        """
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    cursor.close()
+    if result[0] == 0:
+        check="YES"
+    else:
+        check="NO"
+    print(check)
+    conn.close()
+    return check
+
+def telcheck(tel):
+    conn = getConnection()
+    cursor = conn.cursor()
+    #print(tel)
+    check = ""
+    sql = f"""
+                SELECT COUNT(*) FROM d_member
+                WHERE tel='{tel}'
+            """
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    cursor.close()
+    if result[0] == 0:
+        check = "YES"
+    else:
+        check = "NO"
+    #print(check)
+    conn.close()
+    return check
+
+#장바구니 추가
+def cartAdd(cart_value):
+    conn = getConnection()
+    cursor = conn.cursor()
+    result="NO"
+    sql=f"""
+        INSERT INTO cart(no,pno,title,amount,price,poster,id)
+        VALUES(
+            (SELECT NVL(MAX(no)+1,1) FROM cart), :1, :2, :3, :4, :5, :6 
+        )
+    """
+    try:
+        cursor.execute(sql,cart_value)
+        conn.commit()
+        print("추가완료")
+        result="YES"
+        cursor.close()
+    except Exception as e:
+        print(e)
+    conn.close()
+    return result
+
+#장바구니 정보
+def cartInfo(id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    print(id)
+    sql=f"""
+        SELECT no,pno,title,amount,poster,price
+        FROM cart
+        WHERE id='{id}'
+        ORDER BY no DESC
+    """
+    cursor.execute(sql)
+    list=cursor.fetchall()
+    #print(list)
+    cursor.close()
+    conn.close()
+    return list
+
+#장바구니 삭제
+def cartDelete(no):
+    conn = getConnection()
+    cursor = conn.cursor()
+    result="NO"
+    sql=f"""
+        DELETE FROM cart
+        WHERE no={no}
+    """
+    try:
+        cursor.execute(sql)
+        conn.commit()
+        result="YES"
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(e)
+    return result
+
+#주문으로
+def cartToOrder(id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    sql = f"""
+            SELECT no,pno,title,amount,poster,price
+            FROM cart
+            WHERE id='{id}'
+            ORDER BY no DESC
+        """
+    cursor.execute(sql)
+    list = cursor.fetchall()
+    #print(list)
+    cursor.close()
+
+    for row in list:
+        cursor = conn.cursor()
+        print(row[1])
+        print(row[2])
+        print(row[3])
+        print(row[4])
+        print(row[5])
+        print('------')
+        sql = f"""
+                INSERT INTO order_ok(no,pno,title,amount,poster,price,id)
+                VALUES(
+                    (SELECT NVL(MAX(no)+1,1) FROM order_ok), 
+                    {row[1]}, 
+                    '{row[2]}', 
+                    {row[3]}, 
+                    '{row[4]}', 
+                    '{row[5]}', 
+                    '{id}' 
+                )
+            """
+        cursor.execute(sql)
+        conn.commit()
+        print('추가완료')
+        cursor.close()
+
+    cursor=conn.cursor()
+    sql=f"""
+        DELETE FROM cart
+        WHERE id='{id}'
+    """
+    cursor.execute(sql)
+    conn.commit()
+    print('삭제완료')
+    cursor.close()
+    conn.close()
+
+#주문내역 불러오기
+def orderList(id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    sql=f"""
+        SELECT no,pno,title,amount,poster,price
+            FROM order_ok
+            WHERE id='{id}'
+            ORDER BY no DESC
+    """
+    cursor.execute(sql)
+    list=cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return list
+
+#내가 쓴 일기 보기
+def mypageDiaryList(id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    sql=f"""
+        SELECT no,title,heart,regdate,mood
+        FROM daily
+        WHERE id= '{id}'
+        ORDER BY no DESC        
+    """
+    cursor.execute(sql)
+    list=cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return list
+
+#주문목록에서 삭제
+def mypageOrderListDelete(id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    sql=f"""
+        DELETE FROM order_ok
+        WHERE id='{id}'
+    """
+    cursor.execute(sql)
+    conn.commit()
+    cursor.close()
+    conn.close()
